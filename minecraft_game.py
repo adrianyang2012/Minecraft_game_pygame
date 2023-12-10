@@ -27,7 +27,9 @@ pygame.display.set_caption("Minecraft game")
 running = True
 image = pygame.image.load("Minecraft_game\Minecraft_game\idle180.png")
 enemy_image = pygame.image.load("Minecraft_game\Minecraft_game\pigFace.png")
-enemy_battle = pygame.image.load('Minecraft_game/Minecraft_game/PigR1.png')
+enemy_battle = pygame.image.load('Minecraft_game/Minecraft_game/Pig_battling.webp')
+enemy_battle = pygame.transform.scale(enemy_battle, (100,100))
+
 # creating a running loop
 while running:
        
@@ -51,7 +53,7 @@ while running:
             
     if battle:
       screen.fill((0,0,255))
-      screen.blit(enemy_battle,(200,400))
+      screen.blit(enemy_battle,(400,520))
     else:        
       screen.fill((0,255,0))
       battle = 0
