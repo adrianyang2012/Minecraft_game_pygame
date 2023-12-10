@@ -1,8 +1,10 @@
 import sys
+import math
 import pygame
 # initialising pygame
 pygame.init()
 import random
+battle = 0
 
 
 
@@ -16,12 +18,16 @@ py = 0
 health = 20
 coins = 0
 lose = 0
-
+enemys = []
+for i in range(0,30):
+  enemys.append((random.randint(0,800),random.randint(0,600)))
 # creating display
 screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Minecraft game")
 running = True
-image = pygame.image.load("Minecraft_game\idle180.png")
+image = pygame.image.load("Minecraft_game\Minecraft_game\idle180.png")
+enemy_image = pygame.image.load("Minecraft_game\Minecraft_game\pigFace.png")
+enemy_battle = pygame.image.load('Minecraft_game/Minecraft_game/PigR1.png')
 # creating a running loop
 while running:
        
@@ -43,8 +49,18 @@ while running:
             if keys[pygame.K_d]:
               px+=3
             
-            
-    screen.fill((0,255,0))
-    screen.blit(image, (px,py))
-    
+    if battle:
+      screen.fill((0,0,255))
+      screen.blit(enemy_battle,(200,400))
+    else:        
+      screen.fill((0,255,0))
+      battle = 0
+      screen.blit(image, (px,py))
+      for enemy in enemys:
+        screen.blit(enemy_image,(enemy[0],enemy[1]))
+        if math.sqrt((enemy[0]-px)**2 + (enemy[1]-py)**2) < 30:
+          battle = 1
+          
+
     pygame.display.flip()
+    
