@@ -9,7 +9,6 @@ battle = 0
 
 
 items = ['bread','fist']
-
 costs = {'wooden sword':2,'stone sword':4,'bow':7,'iron sword':9,'crossbow':10,'grenade':15,'bread':1,'apple':2,'sandwitch':3,'cake':8,'extra large pizza':12}
 weapons_dict = {'fist':1,'wooden sword':5,'stone sword':7,'bow':8,'iron sword':9,'crossbow':11,'grenade':14}
 food_dict = {'bread':2,'apple':4,'sandwitch':6,'cake':7,'extra large pizza':10}
@@ -27,7 +26,7 @@ pygame.display.set_caption("Minecraft game")
 running = True
 image = pygame.image.load("Minecraft_game\Minecraft_game\idle180.png")
 enemy_image = pygame.image.load("Minecraft_game\Minecraft_game\pigFace.png")
-enemy_battle = pygame.image.load('Minecraft_game/Minecraft_game/Pig_battling.webp')
+enemy_battle = pygame.image.load('Minecraft_game\Minecraft_game\Pig_battling.webp')
 enemy_battle = pygame.transform.scale(enemy_battle, (100,100))
 big_player = pygame.transform.scale(image, (100,100))
 # creating a running loop
@@ -54,13 +53,22 @@ while running:
     if battle:
       en_health = random.randint(12,15)
       if attacker == 'e':
-        en_x-=0.1
+        en_x-=0.5
         if en_x < 100:
           attacker = 'p'
-          en_x = 400  
+
+        if en_x < 150:
+          p_x-=0.5  
+      else:
+        if en_x < 400:
+        
+          en_x+=0.4
+        if p_x < 100:
+          p_x+=0.4
+
       screen.fill((0,0,255))
       screen.blit(enemy_battle,(en_x,520))
-      screen.blit(big_player,(100,500))
+      screen.blit(big_player,(p_x,500))
 
     else:        
       screen.fill((0,255,0))
@@ -70,6 +78,7 @@ while running:
         screen.blit(enemy_image,(enemy[0],enemy[1]))
         if math.sqrt((enemy[0]-px)**2 + (enemy[1]-py)**2) < 30:
           en_x = 400
+          p_x = 100
           battle = 1
           attacker = 'e'
 
