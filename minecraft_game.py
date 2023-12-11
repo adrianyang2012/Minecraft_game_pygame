@@ -52,9 +52,16 @@ while running:
               px+=3
             
     if battle:
+      en_health = random.randint(12,15)
+      if attacker == 'e':
+        en_x-=0.1
+        if en_x < 100:
+          attacker = 'p'
+          en_x = 400  
       screen.fill((0,0,255))
-      screen.blit(enemy_battle,(400,520))
+      screen.blit(enemy_battle,(en_x,520))
       screen.blit(big_player,(100,500))
+
     else:        
       screen.fill((0,255,0))
       battle = 0
@@ -62,7 +69,10 @@ while running:
       for enemy in enemys:
         screen.blit(enemy_image,(enemy[0],enemy[1]))
         if math.sqrt((enemy[0]-px)**2 + (enemy[1]-py)**2) < 30:
+          en_x = 400
           battle = 1
+          attacker = 'e'
+
           
 
     pygame.display.flip()
