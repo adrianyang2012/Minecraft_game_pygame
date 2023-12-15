@@ -41,13 +41,13 @@ while running:
             if event.type == pygame.QUIT:
                 # change the value to False, to exit the main loop
                 running = False
-            if keys[pygame.K_w]:
+            if keys[pygame.K_w] or keys[pygame.K_UP]:
               py -=3
-            if keys[pygame.K_s]:
+            if keys[pygame.K_s] or keys[pygame.K_DOWN]:
               py+=3
-            if keys[pygame.K_a]:
+            if keys[pygame.K_a] or keys[pygame.K_LEFT]:
               px -=3
-            if keys[pygame.K_d]:
+            if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
               px+=3
             
     if battle:
@@ -60,11 +60,21 @@ while running:
         if en_x < 150:
           p_x-=0.5  
       else:
+        p_attacking = 0
         if en_x < 400:
         
           en_x+=0.4
         if p_x < 100:
           p_x+=0.4
+        if keys[pygame.K_1]:
+          p_attacking = 1
+        if p_attacking:
+          p_x+=0.5
+          if p_x < 100:
+            attacker = 'e'
+
+          if p_x > 150:
+            en_x+=0.5  
 
       screen.fill((0,0,255))
       screen.blit(enemy_battle,(en_x,520))
