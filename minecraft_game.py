@@ -49,11 +49,13 @@ while running:
               px -=3
             if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
               px+=3
-            
+    p_attacking = 0    
     if battle:
       en_health = random.randint(12,15)
       if attacker == 'e':
         en_x-=0.5
+
+          
         if en_x < 100:
           attacker = 'p'
 
@@ -70,10 +72,13 @@ while running:
           p_attacking = 1
         if p_attacking:
           p_x+=0.5
-          if p_x < 100:
+          if p_x > 400:
+            p_attacking = 0
             attacker = 'e'
+          
 
-          if p_x > 150:
+
+          if p_x > 350:
             en_x+=0.5  
 
       screen.fill((0,0,255))
