@@ -10,10 +10,7 @@ my_font = pygame.font.SysFont('Comic Sans MS', 30)
 # set up game varibles
 battle = 0
 items = ['fist','bread']
-costs = {'wooden sword':2,'stone sword':4,'bow':7,'iron sword':9,'crossbow':10,'grenade':15,'bread':1,'apple':2,'sandwitch':3,'cake':8,'extra large pizza':12}
-weapons_dict = {'fist':1,'wooden sword':5,'stone sword':7,'bow':8,'iron sword':9,'crossbow':11,'grenade':14}
 items_dict_pics = {'fist':pygame.transform.scale(pygame.image.load("Minecraft_game\Minecraft_game\punch.png"), (160,160)),'bread':pygame.image.load("Minecraft_game\Minecraft_game\Bread.webp")}
-food_dict = {'bread':2,'apple':4,'sandwitch':6,'cake':7,'extra large pizza':10}
 px = 0
 py = 0
 health = 20
@@ -32,7 +29,7 @@ enemy_image = pygame.image.load("Minecraft_game\Minecraft_game\pigFace.png")
 enemy_battle = pygame.image.load('Minecraft_game\Minecraft_game\Pig_battling.webp')
 enemy_battle = pygame.transform.scale(enemy_battle, (100,100))
 big_player = pygame.transform.scale(image, (100,100))
-
+losed = 0
 # creating a running loop
 battle = 0
 while running:
@@ -82,9 +79,10 @@ while running:
         if keys[pygame.K_1]:
           p_attacking = 1
         if keys[pygame.K_2]:
-          health += 2
-          attacker = 'e'
-          items.remove(items[1])
+          if items[1] != 0:
+            health += 2
+            attacker = 'e'
+            items[1] = 0
         if p_attacking:
           p_x+=0.5
           if p_x > 400:
@@ -101,13 +99,18 @@ while running:
             en_x+=0.5
         if en_health < 1 or health < 1:
           battle = 0
+          if health < 1:
+            losed = 1
       if battle:
         screen.fill((0,0,255))
         # place everything after this
         i = 50
         for item in items:
           i += 200
-          screen.blit(items_dict_pics[item],(i,100))
+          try:
+            screen.blit(items_dict_pics[item],(i,100))
+          except:
+            pass
         try:
           text_surface = my_font.render(str(health), False, (255-health*11, health*11, 0))
         except:
@@ -118,21 +121,26 @@ while running:
         screen.blit(enemy_battle,(en_x,520))
         screen.blit(big_player,(p_x,500))
 
-    else:        
-      screen.fill((0,255,0))
+    else:
+      if not losed:        
+        screen.fill((0,255,0))
       
-      screen.blit(image, (px,py))
-      for enemy in enemys:
-        screen.blit(enemy_image,(enemy[0],enemy[1]))
-        if math.sqrt((enemy[0]-px)**2 + (enemy[1]-py)**2) < 30:
-          en_x = 400
-          enemys.remove(enemy)
-          en_health = random.randint(10,12)
-          p_x = 100
-          p_attacking = 0
-          en_attacking = 1
-          battle = 1
-          attacker = 'e'
+        screen.blit(image, (px,py))
+        for enemy in enemys:
+          screen.blit(enemy_image,(enemy[0],enemy[1]))
+          if math.sqrt((enemy[0]-px)**2 + (enemy[1]-py)**2) < 30:
+            en_x = 400
+            enemys.remove(enemy)
+            en_health = random.randint(10,12)
+            p_x = 100
+            p_attacking = 0
+            en_attacking = 1
+            battle = 1
+            attacker = 'e'
+      else:
+        screen.fill((255,0,0))
+        lose_surface = my_font.render('You Lose!', False, (0, 0, 0))
+        screen.blit(lose_surface,(300,200))
 
           
     pygame.display.flip()
