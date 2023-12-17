@@ -9,7 +9,7 @@ pygame.font.init()
 my_font = pygame.font.SysFont('Comic Sans MS', 30)
 # set up game varibles
 battle = 0
-items = ['bread','fist']
+items = ['fist','bread']
 costs = {'wooden sword':2,'stone sword':4,'bow':7,'iron sword':9,'crossbow':10,'grenade':15,'bread':1,'apple':2,'sandwitch':3,'cake':8,'extra large pizza':12}
 weapons_dict = {'fist':1,'wooden sword':5,'stone sword':7,'bow':8,'iron sword':9,'crossbow':11,'grenade':14}
 items_dict_pics = {'fist':pygame.transform.scale(pygame.image.load("Minecraft_game\Minecraft_game\punch.png"), (160,160)),'bread':pygame.image.load("Minecraft_game\Minecraft_game\Bread.webp")}
@@ -81,6 +81,10 @@ while running:
           p_x+=0.4
         if keys[pygame.K_1]:
           p_attacking = 1
+        if keys[pygame.K_2]:
+          health += 2
+          attacker = 'e'
+          items.remove(items[1])
         if p_attacking:
           p_x+=0.5
           if p_x > 400:
@@ -104,7 +108,10 @@ while running:
         for item in items:
           i += 200
           screen.blit(items_dict_pics[item],(i,100))
-        text_surface = my_font.render(str(health), False, (255-health*11, health*11, 0))
+        try:
+          text_surface = my_font.render(str(health), False, (255-health*11, health*11, 0))
+        except:
+          text_surface = my_font.render(str(health), False, (0, 255, 0))
         screen.blit(text_surface, (p_x+20,450))
         text_surface2 = my_font.render(str(en_health), False, (255-en_health*21, en_health*21, 0))
         screen.blit(text_surface2, (en_x+20,450))
