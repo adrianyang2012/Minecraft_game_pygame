@@ -9,7 +9,7 @@ pygame.font.init()
 my_font = pygame.font.SysFont('Comic Sans MS', 30)
 # set up game varibles
 battle = 0
-items = ['fist','bread']
+items = ['fist','bread','']
 items_dict_pics = {'fist':pygame.transform.scale(pygame.image.load("Minecraft_game\Minecraft_game\punch.png"), (160,160)),'bread':pygame.image.load("Minecraft_game\Minecraft_game\Bread.webp")}
 px = 0
 py = 0
@@ -105,9 +105,11 @@ while running:
         screen.fill((0,0,255))
         # place everything after this
         i = 50
+        rects = []
         for item in items:
           i += 200
           try:
+            rects.append(items_dict_pics[item].get_rect())
             screen.blit(items_dict_pics[item],(i,100))
           except:
             pass
