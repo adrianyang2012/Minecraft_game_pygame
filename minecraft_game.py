@@ -9,18 +9,28 @@ pygame.font.init()
 my_font = pygame.font.SysFont('Comic Sans MS', 30)
 # set up game varibles
 battle = 0
-items = ['fist','bread','']
-items_dict_pics = {'fist':pygame.transform.scale(pygame.image.load("Minecraft_game\Minecraft_game\punch.png"), (160,160)),'bread':pygame.image.load("Minecraft_game\Minecraft_game\Bread.webp")}
+items = ['fist','bread','strength potion','turtle potion']
+items_dict_pics = {'fist':pygame.transform.scale(pygame.image.load("Minecraft_game\Minecraft_game\punch.png"), (80,80)),'bread':pygame.transform.scale(pygame.image.load("Minecraft_game\Minecraft_game\Bread.webp"),(80,80)),'strength potion':pygame.transform.scale(pygame.image.load("Minecraft_game\Minecraft_game\strength_potion.png"), (80,80)),'turtle potion':pygame.transform.scale(pygame.image.load("Minecraft_game\Minecraft_game\Health_Potion.webp"), (80,80))}
 px = 0
 py = 0
 health = 20
 coins = 0
 lose = 0
 enemys = []
+rects = []
+def update_strength():
+  global strength
+  strength = (strength+1)/2
+  if abs(strength-1) < 0.1:
+    strength = 1
+  print(strength)
 for i in range(0,30):
   enemys.append((random.randint(0,800),random.randint(0,600)))
 # creating display
-
+def lose_screen():
+  screen.fill((255,0,0))
+  lose_surface = my_font.render('You Lose!', False, (0, 0, 0))
+  screen.blit(lose_surface,(300,200))
 screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Minecraft game")
 running = True
@@ -32,8 +42,8 @@ big_player = pygame.transform.scale(image, (100,100))
 losed = 0
 # creating a running loop
 battle = 0
+strength = 1
 while running:
- 
 
     for event in pygame.event.get():
             # only do something if the event is of type QUIT
@@ -49,6 +59,37 @@ while running:
                 px -=3
               if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
                 px+=3
+            if battle:
+              if event.type == pygame.MOUSEBUTTONDOWN:
+                #print(rects)
+                for i in range(0,len(rects)):
+                  mouse = pygame.mouse.get_pos()
+                  if pygame.Rect.collidepoint(rects[i], mouse):
+                    if items[i] == 'fist':
+                      p_attacking = 1
+                      update_strength()
+                      print(items)
+                      break
+                    if items[i] == 'bread':
+                      attacker = 'e'
+                      health +=2
+                      update_strength()
+                      items.remove('bread')
+                      break
+                      
+                    if items[i] == 'strength potion':
+                      health -= 5
+                      strength = 8
+                      attacker = 'e'
+                      items.remove('strength potion')
+                      break
+                    if items[i] == 'turtle potion':
+                      items.remove('turtle potion')
+                      health += 5
+                      strength = 0.125
+                      attacker = 'e'
+                      break
+                    
     if battle:
 
 
@@ -76,13 +117,8 @@ while running:
           en_x+=0.4
         if p_x < 100:
           p_x+=0.4
-        if keys[pygame.K_1]:
-          p_attacking = 1
-        if keys[pygame.K_2]:
-          if items[1] != 0:
-            health += 2
-            attacker = 'e'
-            items[1] = 0
+        
+
         if p_attacking:
           p_x+=0.5
           if p_x > 400:
@@ -90,8 +126,9 @@ while running:
             en_attacking = 0
             attacker = 'e'
             if random.randint(0,3) == 3:
-              en_health -=2
-            en_health -=1
+              en_health -=2*strength
+              
+            en_health -=1*strength
           
 
 
@@ -107,12 +144,10 @@ while running:
         i = 50
         rects = []
         for item in items:
-          i += 200
-          try:
-            rects.append(items_dict_pics[item].get_rect())
-            screen.blit(items_dict_pics[item],(i,100))
-          except:
-            pass
+          i += 80
+          rects.append(items_dict_pics[item].get_rect(x=i,y=100))
+          screen.blit(items_dict_pics[item],(i,100))
+
         try:
           text_surface = my_font.render(str(health), False, (255-health*11, health*11, 0))
         except:
@@ -140,9 +175,7 @@ while running:
             battle = 1
             attacker = 'e'
       else:
-        screen.fill((255,0,0))
-        lose_surface = my_font.render('You Lose!', False, (0, 0, 0))
-        screen.blit(lose_surface,(300,200))
+        lose_screen()
 
           
     pygame.display.flip()
