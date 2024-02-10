@@ -26,6 +26,7 @@ def update_strength():
   print(strength)
 for i in range(0,30):
   enemys.append((random.randint(0,800),random.randint(0,600)))
+enemys.append((700,500))
 # creating display
 def lose_screen():
   screen.fill((255,0,0))
@@ -36,8 +37,10 @@ pygame.display.set_caption("Minecraft game")
 running = True
 image = pygame.image.load("Minecraft_game\Minecraft_game\idle180.png")
 enemy_image = pygame.image.load("Minecraft_game\Minecraft_game\pigFace.png")
+boss_image = pygame.transform.scale(pygame.image.load("Minecraft_game\Minecraft_game\pigFace.png"),(100,100))
+
 enemy_battle = pygame.image.load('Minecraft_game\Minecraft_game\Pig_battling.webp')
-enemy_battle = pygame.transform.scale(enemy_battle, (100,100))
+enemy_battle = pygame.transform.scale(enemy_battle, (300,100))
 big_player = pygame.transform.scale(image, (100,100))
 losed = 0
 # creating a running loop
@@ -164,6 +167,8 @@ while running:
       
         screen.blit(image, (px,py))
         for enemy in enemys:
+          if enemy == (700,500):
+            screen.blit(boss_image,(enemy[0],enemy[1]))
           screen.blit(enemy_image,(enemy[0],enemy[1]))
           if math.sqrt((enemy[0]-px)**2 + (enemy[1]-py)**2) < 30:
             en_x = 400
@@ -174,6 +179,7 @@ while running:
             en_attacking = 1
             battle = 1
             attacker = 'e'
+        
       else:
         lose_screen()
 
