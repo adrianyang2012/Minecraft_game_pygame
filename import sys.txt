@@ -1,0 +1,66 @@
+import sys
+
+line_num = 0
+posts = [(0,0),(2,0),(2,2),(0,2)]
+cow_starts = [(0,0),(0,2),(2,1),(1,0),(1,2)]
+cow_start_line = []
+cow_end_line = []
+cow_ends = [(0,2),(1,0),(0,2),(1,2),(1,0)]
+num_posts = 0
+'''
+for line in sys.stdin:
+    line_num+=1
+    num_posts = int(line.split(' ')[1])
+    if line_num == 1:
+        break
+'''
+for i in range(0,len(cow_starts)):
+    for j in range(0,len(posts)):
+        try:
+            ratio = ((posts[j][0]-posts[(j+1)%len(posts)][0])/(posts[j][1]-posts[(j+1)%len(posts)][1]))
+        except:
+            ratio = 0
+        try:
+            ratio2 = ((posts[j][0]-posts[(j-1)%len(posts)][0])/(posts[j][1]-posts[(j-1)%len(posts)][1]))
+        except:
+            ratio2 = 0
+        try:
+            my_ratio = ((posts[j][0]-cow_starts[i][0])/(posts[j][1]-cow_starts[i][1]))
+        except:
+            my_ratio = 0
+        if my_ratio == ratio:
+            cow_start_line.append((posts[(j+1)%len(posts)],posts[j]))
+            break
+        elif my_ratio == ratio2:
+            cow_start_line.append((posts[(j-1)%len(posts)],posts[j]))
+            break
+        elif my_ratio == 0:
+            cow_start_line.append((posts[(j+1)%len(posts)],posts[j]))
+            break
+
+for i in range(0,len(cow_ends)):
+    for j in range(0,len(posts)):
+        try:
+            ratio = ((posts[j][0]-posts[(j+1)%len(posts)][0])/(posts[j][1]-posts[(j+1)%len(posts)][1]))
+        except:
+            ratio = 0
+        try:
+            ratio2 = ((posts[j][0]-posts[(j-1)%len(posts)][0])/(posts[j][1]-posts[(j-1)%len(posts)][1]))
+        except:
+            ratio2 = 0
+        try:
+            my_ratio = ((posts[j][0]-cow_ends[i][0])/(posts[j][1]-cow_ends[i][1]))
+        except:
+            my_ratio = 0
+        if my_ratio == ratio:
+            cow_end_line.append((posts[(j+1)%len(posts)],posts[j]))
+            break
+        elif my_ratio == ratio2:
+            cow_end_line.append((posts[(j-1)%len(posts)],posts[j]))
+            break
+        elif my_ratio == 0:
+            cow_end_line.append((posts[(j+1)%len(posts)],posts[j]))
+            break
+for i in range(0,len(cow_end_line)):
+    dist1 = 0
+    cow_start_line
